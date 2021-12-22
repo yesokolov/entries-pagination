@@ -1,0 +1,49 @@
+{
+    "name": "yesokolov/entries-pagination",
+    "description": "Add custom entries pagination",
+    "type": "craft-plugin",
+    "version": "1.0.0",
+    "keywords": [
+        "craft",
+        "cms",
+        "craftcms",
+        "craft-plugin",
+        "entries pagination"
+    ],
+    "support": {
+        "docs": "https://github.com/yesokolov/entries-pagination/blob/master/README.md",
+        "issues": "https://github.com/yesokolov/entries-pagination/issues"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Ye. Sokolov",
+            "homepage": "http://site.url"
+        }
+    ],
+    "require": {
+        "craftcms/cms": "^3.0.0"
+    },
+    "require-dev": {
+      "craftcms/cms": "^3.2.0",
+      "codeception/codeception": "^3.0",
+      "vlucas/phpdotenv": "^3.0"
+    },
+    "autoload": {
+        "psr-4": {
+          "yesokolov\\entriespagination\\": "src/"
+        }
+    },
+    "extra": {
+        "name": "Entries Pagination",
+        "handle": "entries-pagination",
+        "developer": "Ye. Sokolov",
+        "developerUrl": "http://site.url",
+        "documentationUrl": "https://github.com/yesokolov/entries-pagination/blob/master/README.md",
+        "changelogUrl": "https://raw.githubusercontent.com/yesokolov/entries-pagination/master/CHANGELOG.md",
+        "components": {
+            "main": "yesokolov\\entriespagination\\services\\Main"
+        },
+        "class": "yesokolov\\entriespagination\\EntriesPagination"
+    }
+}

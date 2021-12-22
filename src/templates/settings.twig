@@ -1,0 +1,26 @@
+{# @var craft \craft\web\twig\variables\CraftVariable #}
+{#
+/**
+ * Entries Pagination plugin for Craft CMS 3.x
+ *
+ * Entries Pagination Settings.twig
+ *
+ * @author    Ye. Sokolov
+ * @copyright Copyright (c) 2021 Ye. Sokolov
+ * @link      http://site.url
+ * @package   EntriesPagination
+ * @since     1.0.0
+ */
+#}
+
+{% import "_includes/forms" as forms %}
+
+{% do view.registerAssetBundle("yesokolov\\entriespagination\\assetbundles\\entriespagination\\EntriesPaginationAsset") %}
+
+{{ forms.textField({
+    label: 'Some Field',
+    instructions: 'Enter some setting here.',
+    id: 'someAttribute',
+    name: 'someAttribute',
+    value: settings['someAttribute']})
+}}
