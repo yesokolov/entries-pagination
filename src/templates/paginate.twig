@@ -1,0 +1,18 @@
+
+{% block footer %}
+    <div id="count-spinner" class="spinner hidden"></div>
+    <div id="pagination" class="light flex-grow">
+        {% for page in pages %}
+            <li>
+                <a {{ page.current ? 'class=current'}} href="{{ page.url }}">
+                    {{ page.num }}
+                </a>
+            </li>
+        {% endfor %}
+        <div class="all">
+            {{ num }}
+        </div>
+    </div>
+    <button type="button" id="export-btn" class="btn hidden">{{ 'Export…'|t('app') }}</button>
+{% endblock %}
+

@@ -9,3 +9,26 @@
  * @package   EntriesPagination
  * @since     1.0.0
  */
+#pagination .paginate-link{
+    display: inline;
+    font-size: 15px;
+    width: 30px;
+    letter-spacing: 6px;
+}
+#pagination .paginate-link .current{
+    display: inline;
+    font-size: 15px;
+    width: 30px;
+    letter-spacing: 6px;
+    color: darkred;
+}
+#pagination .paginate-link a:hover{
+    color: darkred;
+    text-decoration: none;
+}
+#pagination {
+    width: 90%;
+}
+#pagination .all {
+    padding-left: 20px;
+}

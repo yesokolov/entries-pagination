@@ -10,10 +10,16 @@
 
 namespace yesokolov\entriespagination\controllers;
 
+use craft\controllers\ElementIndexesController;
+use craft\elements\Entry;
+use yesokolov\entriespagination\assetbundles\entriespagination\EntriesPaginationCPSectionAsset;
 use yesokolov\entriespagination\EntriesPagination;
 
 use Craft;
 use craft\web\Controller;
+use yii\base\ActionEvent;
+use yii\base\Event;
+use yii\web\AssetBundle;
 
 /**
  * Main Controller
@@ -37,43 +43,47 @@ use craft\web\Controller;
  */
 class MainController extends Controller
 {
-
-    // Protected Properties
-    // =========================================================================
-
-    /**
-     * @var    bool|array Allows anonymous access to this controller's actions.
-     *         The actions must be in 'kebab-case'
-     * @access protected
-     */
-    protected $allowAnonymous = ['index', 'do-something'];
-
-    // Public Methods
-    // =========================================================================
-
-    /**
-     * Handle a request going to our plugin's index action URL,
-     * e.g.: actions/entries-pagination/main
-     *
-     * @return mixed
-     */
-    public function actionIndex()
+    protected $allowAnonymous = ['index', 'entries','ajax'];
+    public function actionEntries($sectionHandle = null)
     {
-        $result = 'Welcome to the MainController actionIndex() method';
-
-        return $result;
+       $pages = EntriesPagination::pages($sectionHandle);
+       $pages = count($pages) > 1 ? $pages : array();
+       $num = $pages['number'];
+       $last = $pages['last'];
+       $current = $pages['current'];
+       unset($pages['number']);
+       unset($pages['last']);
+       unset($pages['current']);
+        return $this->renderTemplate(
+            'entries-pagination/entries-pagination.twig',
+            [
+                'elementType' => "craft\\elements\\Entry",
+                'title' => 'Entries',
+                'pages'=> $pages,
+                'num' => $num,
+                'last' => $last,
+                'current' => $current
+            ]
+        );
     }
-
-    /**
-     * Handle a request going to our plugin's actionDoSomething URL,
-     * e.g.: actions/entries-pagination/main/do-something
-     *
-     * @return mixed
-     */
-    public function actionDoSomething()
-    {
-        $result = 'Welcome to the MainController actionDoSomething() method';
-
-        return $result;
+    public function actionAjax($sectionHandle = null){
+        if($sectionHandle == '*'){
+            $sectionHandle = null;
+        }elseif($sectionHandle == 'singles'){
+            $sectionHandle = 'singles';
+        }
+        $pages = EntriesPagination::pages($sectionHandle);
+        $pages = count($pages) > 1 ? $pages : array();
+        $num = $pages['number'];
+        $last = $pages['last'];
+        $current = $pages['current'];
+        unset($pages['number']);
+        unset($pages['last']);
+        unset($pages['current']);
+        return $this->renderTemplate('entries-pagination/paginate.twig', [
+            'pages'=> $pages,
+            'num' => $num,
+            'last' => $last,
+            'current' => $current] );
     }
 }

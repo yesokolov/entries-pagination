@@ -1,8 +1,8 @@
 <?php
 /**
- * Entries Pagination plugin for Craft CMS 3.x
+ * plugin plugin for Craft CMS 3.x
  *
- * Add custom entries pagination
+ * kdjfksfjskdfjskld
  *
  * @link      http://site.url
  * @copyright Copyright (c) 2021 Ye. Sokolov
@@ -15,7 +15,7 @@ use craft\web\AssetBundle;
 use craft\web\assets\cp\CpAsset;
 
 /**
- * EntriesPaginationAsset AssetBundle
+ * PluginCPSectionAsset AssetBundle
  *
  * AssetBundle represents a collection of asset files, such as CSS, JS, images.
  *
@@ -29,10 +29,10 @@ use craft\web\assets\cp\CpAsset;
  * http://www.yiiframework.com/doc-2.0/guide-structure-assets.html
  *
  * @author    Ye. Sokolov
- * @package   EntriesPagination
+ * @package   Plugin
  * @since     1.0.0
  */
-class EntriesPaginationAsset extends AssetBundle
+class EntriesPaginationCPSectionAsset extends AssetBundle
 {
     // Public Methods
     // =========================================================================
@@ -44,7 +44,6 @@ class EntriesPaginationAsset extends AssetBundle
     {
         // define the path that your publishable resources live
         $this->sourcePath = "@yesokolov/entriespagination/assetbundles/entriespagination/dist";
-
         // define the dependencies
         $this->depends = [
             CpAsset::class,
