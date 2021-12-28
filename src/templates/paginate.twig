@@ -1,16 +1,18 @@
 
 {% block footer %}
     <div id="count-spinner" class="spinner hidden"></div>
-    <div id="pagination" class="light flex-grow">
-        {% for page in pages %}
-            <li>
-                <a {{ page.current ? 'class=current'}} href="{{ page.url }}">
-                    {{ page.num }}
-                </a>
-            </li>
-        {% endfor %}
+    <div id="pagination" class="pagination flex">
+        <ul>
+            {% for page in pages %}
+                <div class="paginate-link">
+                    <a {{ page.current ? 'class=current'}} href="{{ page.url }}">
+                        {{ page.num }}
+                    </a>
+                </div>
+            {% endfor %}
+        </ul>
         <div class="all">
-            {{ num }}
+            {{ current == 1 ? 1 : (100 * (current - 1) +1)  }}-{{ last ? num : current == 1 ? 100 :  current * 100 }} of {{ num }} entries
         </div>
     </div>
     <button type="button" id="export-btn" class="btn hidden">{{ 'Export…'|t('app') }}</button>

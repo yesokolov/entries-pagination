@@ -47,13 +47,13 @@ class MainController extends Controller
     public function actionEntries($sectionHandle = null)
     {
        $pages = EntriesPagination::pages($sectionHandle);
-       $pages = count($pages) > 1 ? $pages : array();
        $num = $pages['number'];
        $last = $pages['last'];
        $current = $pages['current'];
        unset($pages['number']);
        unset($pages['last']);
        unset($pages['current']);
+        $pages = count($pages) > 1 ? $pages : array();
         return $this->renderTemplate(
             'entries-pagination/entries-pagination.twig',
             [
@@ -73,13 +73,13 @@ class MainController extends Controller
             $sectionHandle = 'singles';
         }
         $pages = EntriesPagination::pages($sectionHandle);
-        $pages = count($pages) > 1 ? $pages : array();
         $num = $pages['number'];
         $last = $pages['last'];
         $current = $pages['current'];
         unset($pages['number']);
         unset($pages['last']);
         unset($pages['current']);
+        $pages = count($pages) > 1 ? $pages : array();
         return $this->renderTemplate('entries-pagination/paginate.twig', [
             'pages'=> $pages,
             'num' => $num,
