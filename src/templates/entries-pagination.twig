@@ -1,19 +1,15 @@
 {% extends "entries" %}
 {% do view.registerAssetBundle("yesokolov\\entriespagination\\assetbundles\\entriespagination\\EntriesPaginationCPSectionAsset") %}
-
-
     {% block footer %}
         <div id="count-spinner" class="spinner hidden"></div>
         <div id="pagination" class="pagination flex">
-            <ul>
                 {% for page in pages %}
                     <div class="paginate-link">
-                        <a {{ page.current ? 'class=current'}} href="{{ page.url }}">
+                        <span class="page {{ page.current ? 'current'}}"  data-url="{{ page.url }}">
                             {{ page.num }}
-                        </a>
+                        </span>
                     </div>
                 {% endfor %}
-            </ul>
             <div class="all">
                 {{ current == 1 ? 1 : (100 * (current - 1) +1)  }}-{{ last ? num : current == 1 ? 100 :  current * 100 }} of {{ num }} entries
             </div>

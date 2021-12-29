@@ -274,9 +274,9 @@ class EntriesPagination extends Plugin
                 $url = '/admin/entries/'.$sectionHandle.'/'.$pageTrigger.$i;
             }
 
-            $pages[] = array('num' => $i, 'url' => $url, 'current' => $current );
+            $pages['pages'][] = array('num' => $i, 'url' => $url, 'current' => $current );
         }
-        $lastpage = count($pages) == $pageNum ? true:false;
+        $lastpage = count($pages['pages']) == $pageNum ? true:false;
         $pages['number'] = $entriesNum;
         $pages['current'] = $pageNum;
         $pages['last'] = $lastpage;

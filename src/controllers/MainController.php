@@ -47,43 +47,33 @@ class MainController extends Controller
     public function actionEntries($sectionHandle = null)
     {
        $pages = EntriesPagination::pages($sectionHandle);
-       $num = $pages['number'];
-       $last = $pages['last'];
-       $current = $pages['current'];
-       unset($pages['number']);
-       unset($pages['last']);
-       unset($pages['current']);
-        $pages = count($pages) > 1 ? $pages : array();
+        $pages['pages'] = count($pages['pages']) > 1 ? $pages['pages'] : array();
         return $this->renderTemplate(
             'entries-pagination/entries-pagination.twig',
             [
                 'elementType' => "craft\\elements\\Entry",
                 'title' => 'Entries',
-                'pages'=> $pages,
-                'num' => $num,
-                'last' => $last,
-                'current' => $current
+                'pages'=> $pages['pages'],
+                'num' => $pages['number'],
+                'last' => $pages['last'],
+                'current' => $pages['current']
             ]
         );
     }
     public function actionAjax($sectionHandle = null){
+        $this -> requireAcceptsJson();
         if($sectionHandle == '*'){
             $sectionHandle = null;
         }elseif($sectionHandle == 'singles'){
             $sectionHandle = 'singles';
         }
         $pages = EntriesPagination::pages($sectionHandle);
-        $num = $pages['number'];
-        $last = $pages['last'];
-        $current = $pages['current'];
-        unset($pages['number']);
-        unset($pages['last']);
-        unset($pages['current']);
-        $pages = count($pages) > 1 ? $pages : array();
-        return $this->renderTemplate('entries-pagination/paginate.twig', [
-            'pages'=> $pages,
-            'num' => $num,
-            'last' => $last,
-            'current' => $current] );
+        $pages['pages'] = count($pages['pages']) > 1 ? $pages['pages'] : array();
+        return $this->asJson([
+            'pages'=> $pages['pages'],
+            'num' => $pages['number'],
+            'last' => $pages['last'],
+            'current' => $pages['current']
+        ] );
     }
 }

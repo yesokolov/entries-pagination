@@ -22,9 +22,10 @@
     letter-spacing: 6px;
     color: darkred;
 }
-#pagination .paginate-link a:hover{
+#pagination .paginate-link:hover{
     color: darkred;
     text-decoration: none;
+    cursor:pointer;
 }
 #pagination {
     width: 90%;

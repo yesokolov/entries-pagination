@@ -10,25 +10,50 @@
  * @since     1.0.0
  */
 function getPagination(url){
-    fetch(url,{method: 'get'}).then(function (response){
-       return response.text(); 
-    }).then(function (data){
-        document.getElementById('pagination').innerHTML = data;
-    }).catch(function (err){
-        console.warn('Error:', err);
+    // fetch(url,{method: 'get'}).then(function (response){
+    //    return response.text();
+    // }).then(function (data){
+    //     console.log(data);
+    //     // document.getElementById('pagination').innerHTML = data;
+    // }).catch(function (err){
+    //     console.warn('Error:', err);
+    // });
+    // $.ajax({
+    //     dataType:"json",
+    //     url: url,
+    //     data: data,
+    //     success: success
+    // });
+    $.getJSON(url, function (data){
+        var pages = data.pages;
+        if(data.current == 1){
+            var current = 1
+        }else{
+            var current = (100 * (data.current - 1 ) +1);
+        }
+        if(data.last == false){
+            console.log(data.last);
+            var entryEnd = data.current * 100;
+        }else{
+            var entryEnd = data.num;
+        }
+        var paginateString = '<div class="all">' + current + ' - ' + entryEnd + ' of '+ data.num +' entries</div>';
+        var pagesArr = [];
+        $.each(pages, function(key,value){
+            if(value['current'] == true){
+                var current = 'current';
+            }else {
+                var current = '';
+            }
+            pagesArr.push('<div class="paginate-link">' +
+                '<span class="page '+ current +'" data-url='+ value['url'] +'>' + value['num'] +'</span>' +
+                '</div>');
+        });
+        $('#pagination').empty();
+        $('#pagination').append(pagesArr);
+        $('#pagination').append(paginateString);
     });
 }
-// window.onload = function() {
-//     var menu = document.getElementById('sidebar');
-//     menu.onclick = function (){
-//         setTimeout();
-//         var ajaxUrl = '';
-//         var section = getAllUrlParams(window.location.href);
-//         ajaxUrl = '/admin/pagination-ajax/' + section;
-//         getPagination(ajaxUrl);
-//         console.log(ajaxUrl);
-//     }
-// }
     $('#sidebar a').click(function(){
         var handle = $(this).data('handle');
         var key = $(this).data('key');
