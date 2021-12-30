@@ -10,8 +10,8 @@
 
 namespace yesokolov\entriespagination\models;
 
+use enshrined\svgSanitize\data\AttributeInterface;
 use yesokolov\entriespagination\EntriesPagination;
-
 use Craft;
 use craft\base\Model;
 
@@ -39,7 +39,7 @@ class Settings extends Model
      *
      * @var string
      */
-    public $someAttribute = 'Some Default';
+    public $enableAjax;
 
     // Public Methods
     // =========================================================================
@@ -57,8 +57,7 @@ class Settings extends Model
     public function rules()
     {
         return [
-            ['someAttribute', 'string'],
-            ['someAttribute', 'default', 'value' => 'Some Default'],
+            ['enableAjax', 'string']
         ];
     }
 }

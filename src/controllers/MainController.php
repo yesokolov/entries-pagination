@@ -11,14 +11,11 @@
 namespace yesokolov\entriespagination\controllers;
 
 use craft\controllers\ElementIndexesController;
-use craft\elements\Entry;
 use yesokolov\entriespagination\assetbundles\entriespagination\EntriesPaginationCPSectionAsset;
 use yesokolov\entriespagination\EntriesPagination;
 
 use Craft;
 use craft\web\Controller;
-use yii\base\ActionEvent;
-use yii\base\Event;
 use yii\web\AssetBundle;
 
 /**
@@ -43,7 +40,7 @@ use yii\web\AssetBundle;
  */
 class MainController extends Controller
 {
-    protected $allowAnonymous = ['index', 'entries','ajax'];
+    protected $allowAnonymous = ['entries','ajax','get-elements'];
     public function actionEntries($sectionHandle = null)
     {
        $pages = EntriesPagination::pages($sectionHandle);
@@ -56,7 +53,8 @@ class MainController extends Controller
                 'pages'=> $pages['pages'],
                 'num' => $pages['number'],
                 'last' => $pages['last'],
-                'current' => $pages['current']
+                'current' => $pages['current'],
+                'ajax' => $pages['ajax']
             ]
         );
     }
@@ -73,7 +71,13 @@ class MainController extends Controller
             'pages'=> $pages['pages'],
             'num' => $pages['number'],
             'last' => $pages['last'],
-            'current' => $pages['current']
+            'current' => $pages['current'],
+            'ajax' => $pages['ajax']
         ] );
+    }
+    public function actionGetElements(){
+        $elementsController = new ElementIndexesController();
+        $elements = $elementsController->actionGetElements();
+        Craft::dd($elements);
     }
 }

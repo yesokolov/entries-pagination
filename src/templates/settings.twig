@@ -14,13 +14,17 @@
 #}
 
 {% import "_includes/forms" as forms %}
-
+{#{% dd settings.enableAjax %}#}
 {% do view.registerAssetBundle("yesokolov\\entriespagination\\assetbundles\\entriespagination\\EntriesPaginationCPSectionAsset") %}
-
-{{ forms.textField({
-    label: 'Some Field',
-    instructions: 'Enter some setting here.',
-    id: 'someAttribute',
-    name: 'someAttribute',
-    value: settings['someAttribute']})
+{{ forms.selectField({
+    label: 'Ajax Pagination'|t,
+    instructions: 'Ajax loading pagination'|t,
+    id: 'enable-ajax',
+    name: 'enableAjax',
+    options : {
+        1: 'Enable',
+        0: 'Disable'
+    },
+    value: settings.enableAjax
+})
 }}

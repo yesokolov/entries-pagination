@@ -12,18 +12,15 @@
 #pagination .paginate-link{
     display: inline;
     font-size: 15px;
-    width: 30px;
-    letter-spacing: 6px;
+    width: 20px;
+    text-align: center;
+    border-radius: 5px;
 }
-#pagination .paginate-link .current{
-    display: inline;
-    font-size: 15px;
-    width: 30px;
-    letter-spacing: 6px;
-    color: darkred;
+#pagination .current{
+    background-color: #c8d4e2;
 }
 #pagination .paginate-link:hover{
-    color: darkred;
+    background-color: #c8d4e2;
     text-decoration: none;
     cursor:pointer;
 }
