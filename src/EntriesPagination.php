@@ -85,7 +85,7 @@ class EntriesPagination extends Plugin
 
     // Public Methods
     // =========================================================================
-
+    public $viewState;
     /**
      * Set our $plugin static property to this class so that it can be accessed via
      * EntriesPagination::$plugin
@@ -119,8 +119,8 @@ class EntriesPagination extends Plugin
                 $event->rules['entries'] = 'entries-pagination/main/entries';
                 $event->rules['entries/<sectionHandle:{handle}>'] = ['route'=>'entries-pagination/main/entries', 'params' => ['<sectionHandle>']];
                 $event->rules['pagination-ajax'] = 'entries-pagination/main/ajax';
-                $event->rules['pagination-ajax/*'] = ['route' => 'entries-pagination/main/ajax','params' => ['sectionHandle' => '*']];
-                $event->rules['pagination-ajax/<sectionHandle:{handle}>'] =  ['route' => 'entries-pagination/main/ajax','params' => ['<sectionHandle>']];
+                $event->rules['pagination-ajax/*/<num>'] = ['route' => 'entries-pagination/main/ajax','params' => [ '*', '<num>']];
+                $event->rules['pagination-ajax/<sectionHandle>/<num>'] =  ['route' => 'entries-pagination/main/ajax','params' => ['<sectionHandle>','<num>']];
                 $event->rules['element-ajax'] = 'entries-pagination/main/get-elements';
             }
         );
@@ -133,7 +133,6 @@ class EntriesPagination extends Plugin
                 }
             }
         );
-
 
 /**
  * Logging in Craft involves using one of the following methods:
@@ -162,16 +161,23 @@ class EntriesPagination extends Plugin
             __METHOD__
         );
     }
-    function pages($sectionHandle){
+    function pages($sectionHandle,$pageNum){
         $pages = array();
         $pageTrigger = Craft::$app -> request -> generalConfig -> pageTrigger;
-        $pageNum = Craft::$app -> request -> getPageNum();
-        
         if($sectionHandle == 'singles'){
             $entries = ArrayHelper::where(\Craft::$app->sections->getAllSections(), 'type', Section::TYPE_SINGLE);
             $entriesNum = count($entries);
+        }elseif($sectionHandle == null){
+            $entriesNum = Entry::find()->anyStatus()->count();
         }else{
-            $entriesNum = Entry::find()->section($sectionHandle)->anyStatus()->count();
+            $sectionArray = explode(':',$sectionHandle);
+            if(count($sectionArray) == 1) {
+                $entriesNum = Entry::find()->section($sectionHandle)->anyStatus()->count();
+            }else{
+                $sectionHandle = Craft::$app -> getSections() -> getSectionByUid($sectionArray[1]);
+                $sectionHandle = $sectionHandle -> handle;
+                $entriesNum = Entry::find()->section($sectionHandle)->anyStatus()->count();
+            }
         }
         if($entriesNum % 100 == 0){
             $pagesNum = $entriesNum / 100;

@@ -43,7 +43,8 @@ class MainController extends Controller
     protected $allowAnonymous = ['entries','ajax','get-elements'];
     public function actionEntries($sectionHandle = null)
     {
-       $pages = EntriesPagination::pages($sectionHandle);
+        $pageNum = Craft::$app -> request -> getPageNum();
+        $pages = EntriesPagination::getInstance()->pages($sectionHandle,$pageNum);
         $pages['pages'] = count($pages['pages']) > 1 ? $pages['pages'] : array();
         return $this->renderTemplate(
             'entries-pagination/entries-pagination.twig',
@@ -58,14 +59,14 @@ class MainController extends Controller
             ]
         );
     }
-    public function actionAjax($sectionHandle = null){
+    public function actionAjax($sectionHandle = null,$num){
         $this -> requireAcceptsJson();
         if($sectionHandle == '*'){
             $sectionHandle = null;
         }elseif($sectionHandle == 'singles'){
             $sectionHandle = 'singles';
         }
-        $pages = EntriesPagination::pages($sectionHandle);
+        $pages = EntriesPagination::getInstance() -> pages($sectionHandle,$num);
         $pages['pages'] = count($pages['pages']) > 1 ? $pages['pages'] : array();
         return $this->asJson([
             'pages'=> $pages['pages'],
@@ -74,10 +75,5 @@ class MainController extends Controller
             'current' => $pages['current'],
             'ajax' => $pages['ajax']
         ] );
-    }
-    public function actionGetElements(){
-        $elementsController = new ElementIndexesController();
-        $elements = $elementsController->actionGetElements();
-        Craft::dd($elements);
     }
 }
