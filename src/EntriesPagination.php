@@ -28,6 +28,8 @@ use craft\events\TemplateEvent;
 use craft\events\RegisterTemplateRootsEvent;
 use craft\elements\Entry;
 use craft\helpers\ArrayHelper;
+use yii\web\Response;
+
 /**
  * Craft plugins are very much like little applications in and of themselves. We’ve made
  * it as simple as we can, but the training wheels are off. A little prior knowledge is
@@ -133,6 +135,17 @@ class EntriesPagination extends Plugin
                 }
             }
         );
+        Event::on(
+            ElementIndexesController::class,
+            ElementIndexesController::EVENT_BEFORE_ACTION,
+            function (ActionEvent $event) {
+                if($event->action->controller->action->actionMehod == 'actionGetMoreElements'){
+                    $event->action->controller->runAction($this->getResponse());
+                };
+//                if($event->action->controller->)
+
+            }
+        );
 
 /**
  * Logging in Craft involves using one of the following methods:
@@ -203,6 +216,9 @@ class EntriesPagination extends Plugin
         $pages['last'] = $lastpage;
         $pages['ajax'] = EntriesPagination::getInstance()->getSettings()->enableAjax;
         return $pages;
+    }
+    function getResponse(){
+        Craft::dd('Fuck');
     }
 
     // Protected Methods

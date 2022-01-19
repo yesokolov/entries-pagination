@@ -17,13 +17,13 @@
 {#{% dd settings.enableAjax %}#}
 {% do view.registerAssetBundle("yesokolov\\entriespagination\\assetbundles\\entriespagination\\EntriesPaginationCPSectionAsset") %}
 {{ forms.selectField({
-    label: 'Ajax Pagination'|t,
-    instructions: 'Ajax loading pagination'|t,
+    label: 'Pagination Style'|t,
+    instructions: ' choose pagination style'|t,
     id: 'enable-ajax',
     name: 'enableAjax',
     options : {
-        1: 'Enable',
-        0: 'Disable'
+        1: 'Infinity Scroll',
+        0: 'Page numbers in footer'
     },
     value: settings.enableAjax
 })
