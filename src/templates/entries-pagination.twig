@@ -2,7 +2,7 @@
 {% do view.registerAssetBundle("yesokolov\\entriespagination\\assetbundles\\entriespagination\\EntriesPaginationCPSectionAsset") %}
     {% block footer %}
         <div id="count-spinner" class="spinner hidden"></div>
-        <div id="pagination" class="pagination flex" data-ajax="{{ ajax }}">
+        <div id="pagination" class="pagination flex" data-ajax="{{ ajax }}" data-page="{{ current }}" data-url="{{ pages[current].url }}">
             {% if not ajax %}
                 <div class="page-link prev-page {{ current == 1 ? 'disabled' }}" title="Previous Page"></div>
                     {% for page in pages %}

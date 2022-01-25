@@ -10,7 +10,9 @@
 
 namespace yesokolov\entriespagination;
 
+use craft\elements\db\ElementQueryInterface;
 use craft\models\Section;
+use yesokolov\entriespagination\controllers\ElementController;
 use yesokolov\entriespagination\services\Main as MainService;
 use yesokolov\entriespagination\models\Settings;
 
@@ -20,15 +22,15 @@ use craft\services\Plugins;
 use craft\events\PluginEvent;
 use craft\web\UrlManager;
 use craft\events\RegisterUrlRulesEvent;
-use craft\controllers\ElementIndexesController;
 use yii\base\ActionEvent;
 use yii\base\Event;
 use craft\web\View;
-use craft\events\TemplateEvent;
-use craft\events\RegisterTemplateRootsEvent;
 use craft\elements\Entry;
 use craft\helpers\ArrayHelper;
 use yii\web\Response;
+use craft\events\RegisterElementActionsEvent;
+use craft\controllers\ElementIndexesController;
+use craft\controllers\RoutesController;
 
 /**
  * Craft plugins are very much like little applications in and of themselves. We’ve made
@@ -104,15 +106,6 @@ class EntriesPagination extends Plugin
         parent::init();
         self::$plugin = $this;
 
-        // Do something after we're installed
-        Event::on(
-            UrlManager::class,
-            UrlManager::EVENT_REGISTER_SITE_URL_RULES,
-            function (RegisterUrlRulesEvent $event) {
-                $event->rules['siteActionTrigger1'] = 'entries-pagination/main';
-            }
-        );
-
         // Register our CP routes
         Event::on(
             UrlManager::class,
@@ -123,7 +116,7 @@ class EntriesPagination extends Plugin
                 $event->rules['pagination-ajax'] = 'entries-pagination/main/ajax';
                 $event->rules['pagination-ajax/*/<num>'] = ['route' => 'entries-pagination/main/ajax','params' => [ '*', '<num>']];
                 $event->rules['pagination-ajax/<sectionHandle>/<num>'] =  ['route' => 'entries-pagination/main/ajax','params' => ['<sectionHandle>','<num>']];
-                $event->rules['element-ajax'] = 'entries-pagination/main/get-elements';
+                $event->rules['entries-ajax'] = 'entries-pagination/element/get-elements';
             }
         );
         Event::on(
@@ -139,13 +132,13 @@ class EntriesPagination extends Plugin
             ElementIndexesController::class,
             ElementIndexesController::EVENT_BEFORE_ACTION,
             function (ActionEvent $event) {
-                if($event->action->controller->action->actionMehod == 'actionGetMoreElements'){
-                    $event->action->controller->runAction($this->getResponse());
-                };
-//                if($event->action->controller->)
-
+                if($event -> action -> actionMethod == 'actionGetElements'){
+//                    Craft::dd($event->action);
+                   $this->runAction('element/get-elements',['count' => 1]);
+                }
             }
         );
+
 
 /**
  * Logging in Craft involves using one of the following methods:
@@ -216,9 +209,6 @@ class EntriesPagination extends Plugin
         $pages['last'] = $lastpage;
         $pages['ajax'] = EntriesPagination::getInstance()->getSettings()->enableAjax;
         return $pages;
-    }
-    function getResponse(){
-        Craft::dd('Fuck');
     }
 
     // Protected Methods

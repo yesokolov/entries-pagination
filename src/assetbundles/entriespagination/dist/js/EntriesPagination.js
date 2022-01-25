@@ -171,6 +171,7 @@ function getMoreEntries(num,count,source,location,order,sort){
     var offset = num * count - 100;
     var response = {
         "context": null,
+        "more": true,
         "elementType": "craft\\elements\\Entry",
         "source": source,
         "criteria": {
@@ -185,16 +186,16 @@ function getMoreEntries(num,count,source,location,order,sort){
         },
         "disabledElementIds": [],
         "viewState": {
-            "mode": null,
+            "mode": "table",
             "order": order,
             "sort": sort
         },
-        "paginated": 1
+        "paginated": true
     }
     // get entries by ajax
     $.ajax({
         type: 'post',
-        url: '/admin/actions/element-indexes/get-more-elements',
+        url: '/admin/entries-ajax',
         dataType: 'json',
         data: JSON.stringify(response),
         contentType: "application/json; charset=utf-8",
@@ -203,33 +204,13 @@ function getMoreEntries(num,count,source,location,order,sort){
             var success = true;
             var handle = $('#sidebar ul li .sel').data('key');
             // update entries from ajax
-            $('.elements').empty();
-            $('.elements').append(data.html);
+            $('.elements tbody').append(data.html);
             var url = '/admin/pagination-ajax/' + handle + '/' + num ;
             setLocation(location);
             // update sort and order classes
             var th = $('.main .elements .tableview thead tr th');
             var orderData = $('#sidebar ul li .sel').data('sort-options');
-            let orderData1 = [];
-            Object.entries(orderData).forEach(function ( item,i,orderData){
-                item.forEach(function (item2, i2, item){
-                    orderData1[i]  = item2[1];
-                });
-            });
-            Object.entries(th).forEach(function (item,i,th){
-                var orderableItem = $($(item).get(1)).data('attribute');
-                if(orderable.includes(orderableItem) || orderData1.includes(orderableItem)){
-                    if(orderableItem.includes(order) || orderData1.includes(orderableItem)){
-                        var orderItem = $($(item).get(1)).get(0);
-                        $(orderItem).removeClass('orderable');
-                        $(orderItem).addClass('ordered ' + sort);
-                    }else{
-                        $($(item).get(1)).addClass('orderable');
-                    }
 
-                }
-            });
-            getPagination(url,order,sort);
         }
     });
 
@@ -328,15 +309,6 @@ $('#main').click(function (e){
         }
     }
 });
-
-// window.addEventListener('scroll', function() {
-//     const windowHeight = window.innerHeight
-//     const getBounds = (el) => el.getBoundingClientRect()
-//     let element = document.querySelector("#footer")
-//     if (getBounds(element).top < windowHeight + 300) {
-//         console.log('scroll');
-//     }
-// })
 document.addEventListener("DOMContentLoaded", function() {
     const getBounds = (el) => el.getBoundingClientRect()
     const windowHeight = window.innerHeight

@@ -10,13 +10,19 @@
 
 namespace yesokolov\entriespagination\controllers;
 
+use craft\base\ElementInterface;
 use craft\controllers\ElementIndexesController;
+use craft\elements\db\ElementQuery;
+use craft\elements\db\ElementQueryInterface;
 use yesokolov\entriespagination\assetbundles\entriespagination\EntriesPaginationCPSectionAsset;
 use yesokolov\entriespagination\EntriesPagination;
 
 use Craft;
 use craft\web\Controller;
+use yii\base\ActionEvent;
+use yii\base\Event;
 use yii\web\AssetBundle;
+use yii\web\Response;
 
 /**
  * Main Controller
@@ -40,9 +46,10 @@ use yii\web\AssetBundle;
  */
 class MainController extends Controller
 {
-    protected $allowAnonymous = ['entries','ajax','get-elements'];
+    protected $allowAnonymous = ['entries','ajax'];
     public function actionEntries($sectionHandle = null)
     {
+        $this->requireLogin();
         $pageNum = Craft::$app -> request -> getPageNum();
         $pages = EntriesPagination::getInstance()->pages($sectionHandle,$pageNum);
         $pages['pages'] = count($pages['pages']) > 1 ? $pages['pages'] : array();
@@ -61,6 +68,7 @@ class MainController extends Controller
     }
     public function actionAjax($sectionHandle = null,$num){
         $this -> requireAcceptsJson();
+        $this->requireLogin();
         if($sectionHandle == '*'){
             $sectionHandle = null;
         }elseif($sectionHandle == 'singles'){
